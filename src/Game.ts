@@ -1,12 +1,16 @@
 import { EventEmitter } from "eventemitter3";
 import { Application, Assets, Sprite } from "pixi.js";
 import { Manager } from "./Manager";
-import { StationScene } from './scenes/StationScene';
 import { MenuScene } from './scenes/MenuScene';
+import { StoreData, setupStore } from './state/store/configureStore';
+import { ToolkitStore } from "@reduxjs/toolkit/dist/configureStore";
+import { generateSolarSystem } from './utils/starSystem';
+import RandSeed from 'rand-seed';
 
 export class Game extends EventEmitter {
     private app: Application;
     private static instance: Game;
+    public store: ToolkitStore<StoreData>;
 
     public static getInstance() {
         if (!Game.instance) {
@@ -19,31 +23,27 @@ export class Game extends EventEmitter {
         super();
 
         this.app = this.setupApp();
+        this.store = setupStore();
 
-        this.registerEvents();
-
-        
-        const planet: Sprite = Sprite.from("background.png");
-
-        planet.anchor.set(0.5);
-
-        planet.x = this.app.screen.height / 2;
-        planet.y = this.app.screen.width / 2;
-
-        this.app.stage.addChild(planet);
-
-
+        this.app.ticker.add(this.mainTicker, this);
         Manager.initialize(this.app);
         Manager.changeScene(new MenuScene(this.app, this));
     }
 
-    loadAssets() {
+    mainTicker (framesPassed: number): void {
+        // if (getSystemResurces(this.store, 'home')[RESOURCES.HYDROGEN] === 0) {
+        //     this.store.dispatch(resurcesSlice.actions.change({ location: 'home', resource: RESOURCES.HYDROGEN, value: 10 }))
+        // }
     }
 
-    registerEvents() {
-        this.on('click', (args) => {
-            console.log(args);
-        });
+    drawBackground() {
+        const planet: Sprite = Sprite.from("background.png");
+
+        planet.anchor.set(0.5);
+        planet.x = this.app.screen.height / 2;
+        planet.y = this.app.screen.width / 2;
+
+        this.app.stage.addChild(planet);
     }
 
     setupApp () : Application {

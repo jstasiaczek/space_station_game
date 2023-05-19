@@ -64,7 +64,7 @@ export class BootupScene extends Container implements IScene {
         this.screenHeight = app.screen.height;
         this.game = game;
         this.app = app;
-        this.startTime = Math.floor(Date.now() / 1000);
+        this.startTime = Math.floor(Date.now() / 500);
         this.timeDelta = 0;
         this.timeDeltaPassed = 0;
 
@@ -81,6 +81,32 @@ export class BootupScene extends Container implements IScene {
         this.text = text;
 
         this.addChild(text);
+        this.drawSkipButton();
+    }
+
+    drawSkipButton () {
+        const skip = new Text('skip>>>', {
+            fontFamily: 'Pixel',
+            fontSize: '18px',
+            fill: 0xffffff,
+            lineHeight: 24,
+        });
+        skip.anchor.set(1);
+        skip.x = this.screenWidth - 30;
+        skip.y = this.screenHeight - 30;
+        skip.eventMode = 'dynamic';
+        skip.cursor = 'pointer';
+        skip.on('pointertap', () => {
+            Manager.changeScene(new StationScene(this.app, this.game));
+        });
+        skip.on('mouseover', (e) => {
+            skip.style.fill = 0xff0000;
+        });
+        skip.on('mouseout', (e) => {
+            skip.style.fill = 0xffffff;
+        });
+
+        this.addChild(skip);
     }
 
     animateText () {
@@ -113,7 +139,7 @@ export class BootupScene extends Container implements IScene {
     }
 
     update(framesPassed: number): void {
-        this.timeDelta = Math.floor(Date.now() / 1000) - this.startTime;
+        this.timeDelta = Math.floor(Date.now() / 500) - this.startTime;
         this.animateText();
         framesPassed;
     }

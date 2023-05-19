@@ -1,0 +1,62 @@
+STAR O
+#b3c5ff
+#b1c4ff
+#dfe6ff
+#ffffff
+#7a99ff
+#9db4ff
+#9db4ff
+
+STAR b
+#e6ecff
+#bbccff
+#85a1f6
+#ffffff
+#ffffff
+#bbccff
+#9db4ff
+
+STAR A
+#ededed
+#f2f2f2
+#c2c2c2
+#ffffff
+#ffffff
+#ffffff
+#d3d3d3
+
+STAR F 
+#ededed
+#fbd600
+#ffffff
+#f8f8f8
+#e9e010
+#ffffff
+#d3d3d3
+
+STAR G
+#fff78e
+#fbd600
+#f2ff00
+#fff900
+#e9e010
+#ffffff
+#d3d3d3
+
+STAR K
+#fff78e
+#fba600
+#ffd600
+#ffc300
+#e98c10
+#ffffff
+#d3d3d3
+
+STAR M
+#fff78e
+#ff6b00
+#ff8a00
+#ffcf00
+#e9b610
+#ffffff
+#d3d3d3
