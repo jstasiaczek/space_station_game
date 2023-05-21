@@ -1,3 +1,4 @@
+const { join } = require('path');
 const webpack = require('webpack');
 const path = require('path');
 const CopyPlugin = require('copy-webpack-plugin');
@@ -61,6 +62,9 @@ module.exports = (env, argv) => {
             ]
         },
         resolve: {
+            alias: {
+                '@rApp': join(__dirname, 'src'),
+            },
             extensions: [
                 '.tsx',
                 '.ts',

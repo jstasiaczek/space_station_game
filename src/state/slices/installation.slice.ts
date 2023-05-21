@@ -1,16 +1,9 @@
-import { Draft, createSlice } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import { INSTALLATION_TYPE, Installation, Installations, ResourceAction } from './types';
-import { initInstallationResources } from './typesUtils';
+import { Installation, Installations, ResourceAction } from './types';
+import NP from 'number-precision';
 
-const initialState: Installations = {
-    i1 : {
-        id: 'i1',
-        resources: initInstallationResources(),
-        type: INSTALLATION_TYPE.STATION,
-        generators: [],
-    }
-}
+const initialState: Installations = {};
  
 export const installationSlice = createSlice({
     name: 'installation',
@@ -18,7 +11,7 @@ export const installationSlice = createSlice({
     reducers: {
         updateResource: (state, action: PayloadAction<ResourceAction>) => {
             const { installationId, resource, value } = action.payload;
-            state[installationId].resources[resource] = + value;
+            state[installationId].resources[resource] = NP.plus(state[installationId].resources[resource], value);
             return state;
         },
         installationAdd: (state, action: PayloadAction<Installation>) => {

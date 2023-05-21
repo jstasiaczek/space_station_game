@@ -22,11 +22,14 @@ export enum PLANET_TEMPERATURE {
     COLD = 'COLD',
 }
 
-export interface Planet {
-    type: PLANET_TYPE,
-    temperature: PLANET_TEMPERATURE,
-    name: string;
-    mass: number;
+export interface Galaxy {
+    stars: GalaxyStar[];
+}
+
+export interface GalaxyStar {
+    x: number;
+    y: number;
+    system: SolarSystem;
 }
 
 export interface StarDefinition {
@@ -46,6 +49,7 @@ export interface SpaceObject {
     ratationAngle: number;
     sattelites: Satellite[];
     sprite: string;
+    isStart?: boolean;
 }
 
 export interface Satellite {
@@ -62,55 +66,55 @@ export interface Star {
 export interface SolarSystem {
     star: Star;
     objectsCount: number;
-    objects: SpaceObject[]
+    objects: SpaceObject[];
 }
 
 export const starsTypes: StarDefinition[] = [
     {
         type: STAR_TYPE.M,
-        maxMass: 0.45,
+        maxMass: 1,
         color: 'red',
         maxObjects: 3,
         minObjects: 1,
     },
     {
         type: STAR_TYPE.K,
-        maxMass: 0.8,
+        maxMass: 1.5,
         color: 'orange',
         minObjects: 1,
         maxObjects: 4,
     },
     {
         type: STAR_TYPE.G,
-        maxMass: 1.04,
+        maxMass: 1.8,
         color: 'yellow',
         minObjects: 2,
         maxObjects: 6,
     },
     {
         type: STAR_TYPE.F,
-        maxMass: 1.4,
+        maxMass: 2,
         color: 'lighyellow',
         minObjects: 2,
         maxObjects: 4,
     },
     {
         type: STAR_TYPE.A,
-        maxMass: 2.1,
+        maxMass: 2.3,
         color: 'white',
         minObjects: 1,
         maxObjects: 5,
     },
     {
         type: STAR_TYPE.B,
-        maxMass: 16,
+        maxMass: 3,
         color: 'lightblue',
         minObjects: 2,
         maxObjects: 5,
     },
     {
         type: STAR_TYPE.O,
-        maxMass: 32,
+        maxMass: 4,
         color: 'blue',
         maxObjects: 3,
         minObjects: 2,

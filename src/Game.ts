@@ -4,13 +4,14 @@ import { Manager } from "./Manager";
 import { MenuScene } from './scenes/MenuScene';
 import { StoreData, setupStore } from './state/store/configureStore';
 import { ToolkitStore } from "@reduxjs/toolkit/dist/configureStore";
-import { generateSolarSystem } from './utils/starSystem';
-import RandSeed from 'rand-seed';
-
+import { TimeUpdater } from '@rApp/utils/timeUpdater';
+import { installationSlice } from "./state/slices/installation.slice";
+import { RESOURCES } from "./state/slices/types";
 export class Game extends EventEmitter {
     private app: Application;
     private static instance: Game;
     public store: ToolkitStore<StoreData>;
+    private timeUpdater = new TimeUpdater();
 
     public static getInstance() {
         if (!Game.instance) {
@@ -31,9 +32,18 @@ export class Game extends EventEmitter {
     }
 
     mainTicker (framesPassed: number): void {
-        // if (getSystemResurces(this.store, 'home')[RESOURCES.HYDROGEN] === 0) {
-        //     this.store.dispatch(resurcesSlice.actions.change({ location: 'home', resource: RESOURCES.HYDROGEN, value: 10 }))
-        // }
+        this.timeUpdater.onUpdate((timestamp) => {
+            Object.values(this.store.getState().installations)
+            .forEach(installation => {
+                installation.generators.forEach(generator => {
+                    this.store.dispatch(installationSlice.actions.updateResource({
+                        installationId: installation.id,
+                        resource: RESOURCES.POWER,
+                        value: generator.income,
+                    }))
+                })
+            })
+        })
     }
 
     drawBackground() {

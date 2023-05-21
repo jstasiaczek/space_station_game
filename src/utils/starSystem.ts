@@ -10,6 +10,7 @@ import {
     starsTypes,
     SolarSystem,
     Satellite,
+    Galaxy,
 } from './starSystem.types';
 
 
@@ -38,7 +39,7 @@ export const createObjectByIdx = (rand: RandSeed, idx: number, maxIdx: number, s
     const object: SpaceObject = {
         type: PLANET_TYPE.GAS_GIANT,
         temperature: PLANET_TEMPERATURE.HOT,
-        name: `${starName}-0${(distance)}`,
+        name: `${starName}-P0${(distance)}`,
         sattelites: [],
         startAngle: randomInteger(rand,0,359),
         ratationAngle: randomInteger(rand, 0, 359),
@@ -53,7 +54,7 @@ export const createObjectByIdx = (rand: RandSeed, idx: number, maxIdx: number, s
         object.type = PLANET_TYPE.WET;
     }
     object.sattelites = createSattelites(rand, mass, object.name);
-    object.sprite = `planet/${object.type}_${randomInteger(rand, 1, 4)}.png`;
+    object.sprite = `planet/${object.type}_${randomInteger(rand, 1, 4)}`;
     return object;
 }
 
@@ -72,7 +73,7 @@ export const createSattelites = (rand: RandSeed, mass: number, planetName: strin
 }
 
 export const generateSolarSystem = (rand: RandSeed): SolarSystem => {
-    const starMass = randomInteger(rand, 46, 1700) / 100;
+    const starMass = randomFloat(rand, 0.2, 3.9);
     const angle = randomInteger(rand, 1, 360);
     const system: SolarSystem = {
         star: createStarByMass(starMass, angle),
@@ -88,3 +89,48 @@ export const generateSolarSystem = (rand: RandSeed): SolarSystem => {
 
     return system;
 }
+
+export const generateStartSolarSystem = (rand: RandSeed): SolarSystem => {
+    const starMass = randomFloat(rand, 1.6, 1.8);
+    const angle = randomInteger(rand, 1, 360);
+    const system: SolarSystem = {
+        star: createStarByMass(starMass, angle),
+        objectsCount: 0,
+        objects: []
+    };
+
+    const starDef = getStarDefByType(system.star.type);
+    system.objectsCount = randomInteger(rand, 4, starDef.maxObjects);
+    for (let i = 0; i < system.objectsCount; i++) {
+        system.objects[i] = createObjectByIdx(rand, i, system.objectsCount, system.star.name);
+    }
+
+    const oldObj = system.objects[Math.ceil(system.objectsCount / 2)];
+    system.objects[Math.ceil(system.objectsCount / 2)] = {
+        ...oldObj,
+        mass: randomFloat(rand, 1, 3),
+        type: PLANET_TYPE.WET,
+        sprite: `planet/${PLANET_TYPE.WET}_${randomInteger(rand, 1, 4)}`,
+        isStart: true,
+        sattelites: [
+            {
+                name: `${oldObj.name}-01`,
+            }
+        ],
+    };
+
+    return system;
+}
+
+export const generateGalaxy = (rand: RandSeed): Galaxy => {
+    // TODO: generate many star systems, currently only start
+    return {
+        stars: [
+            {
+                x: 1,
+                y: 1,
+                system: generateStartSolarSystem(rand),
+            }
+        ]
+    }
+};

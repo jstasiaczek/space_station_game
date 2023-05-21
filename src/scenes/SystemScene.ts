@@ -12,9 +12,6 @@ export class SystemScene extends Container implements IScene {
     private readonly screenHeight: number;
     private app: Application;
     private game: Game;
-    private startTime: number;
-    private timeDelta: number;
-    private timeDeltaPassed: number;
     private seed: string = '';
     private currentSeed: string = '';
 
@@ -24,9 +21,6 @@ export class SystemScene extends Container implements IScene {
         this.screenHeight = app.screen.height;
         this.game = game;
         this.app = app;
-        this.startTime = Math.floor(Date.now() / 500);
-        this.timeDelta = 0;
-        this.timeDeltaPassed = 0;
 
         this.currentSeed = this.seed = String(Date.now());
         const system = generateSolarSystem(new RandSeed(this.seed));
@@ -90,8 +84,9 @@ export class SystemScene extends Container implements IScene {
 
         this.addChild(sun);
 
-        const yAdd = ((this.screenHeight / 2) - 60) / system.objectsCount;
-        const xAdd = ((this.screenWidth / 2) - 60) / system.objectsCount;
+        const divider = system.objectsCount <= 2 ? 4 : 2;
+        const yAdd = ((this.screenHeight / divider) - 60) / system.objectsCount;
+        const xAdd = ((this.screenWidth / divider) - 60) / system.objectsCount;
 
         for(let i = 1; i <= system.objectsCount; i++ ) {
             this.drawPlanet(xAdd*i, yAdd*i, system.objects[i-1]);
@@ -110,7 +105,7 @@ export class SystemScene extends Container implements IScene {
 
         const {x,y} = this.getPosOnEcllipse(xAdd, yAdd, planet.startAngle);
 
-        const planetSprite = Sprite.from(planet.sprite);
+        const planetSprite = Sprite.from(`${planet.sprite}.png`);
         planetSprite.anchor.set(0.5);
         planetSprite.x = x;
         planetSprite.y = y;

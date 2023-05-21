@@ -2,6 +2,15 @@ import { Application, Container, Sprite, TextStyle, Text, Graphics } from "pixi.
 import { IScene, Manager } from '../Manager';
 import { Game } from '../Game';
 import { StationScene } from './StationScene';
+import { configSlice } from "@rApp/state/slices/config.slice";
+import { galaxySlice } from "@rApp/state/slices/galaxy.slice";
+import { generateGalaxy } from "@rApp/utils/starSystem";
+import RandSeed from 'rand-seed';
+import { GalaxyStar, SpaceObject } from "@rApp/utils/starSystem.types";
+import { installationSlice } from "@rApp/state/slices/installation.slice";
+import { GENERATOR_INCOME_TYPE, GENERATOR_TYPE, INSTALLATION_TYPE, RESOURCES } from "@rApp/state/slices/types";
+import { initInstallationResources } from "@rApp/state/slices/typesUtils";
+import { MenuScene } from "./MenuScene";
 
 const textLines: {[key: number]: string} = {
     1: ' .',
@@ -57,6 +66,8 @@ export class BootupScene extends Container implements IScene {
     private timeDelta: number;
     private timeDeltaPassed: number;
     private text: Text;
+    private startLoc : GalaxyStar;
+    private startPlanet: SpaceObject | undefined;
 
     constructor(app: Application, game: Game) {
         super();
@@ -70,6 +81,29 @@ export class BootupScene extends Container implements IScene {
 
         this.drawFrame();
 
+        const seed = '12345';
+        this.game.store.dispatch(configSlice.actions.updateSeed(seed));
+        this.game.store.dispatch(galaxySlice.actions.replace(generateGalaxy(new RandSeed(seed))));
+        // get start location
+        // TODO: find some better way
+        this.startLoc = this.game.store.getState().galaxy.stars[0];
+        const startPlanet = this.startLoc.system.objects.find(object => object.isStart === true);
+
+        this.startPlanet = startPlanet;
+        this.game.store.dispatch(installationSlice.actions.installationAdd({
+            generators: [
+                {
+                    income: 0.1,
+                    incomeType: RESOURCES.HYDROGEN,
+                    type: GENERATOR_TYPE.SOLAR_PANELS,
+                    level: 1,
+                }
+            ],
+            type: INSTALLATION_TYPE.STATION,
+            id: `${startPlanet?.name}-${INSTALLATION_TYPE.STATION.slice(0, 3)}01`,
+            resources: initInstallationResources(),
+        }));
+
         const text = new Text('booting', {
             fontFamily: 'Pixel',
             fontSize: '18px',
@@ -78,10 +112,14 @@ export class BootupScene extends Container implements IScene {
         })
         text.x = 30;
         text.y = 30;
-        this.text = text;
+        this.text = text; 
 
         this.addChild(text);
         this.drawSkipButton();
+    }
+
+    startGame() {
+        Manager.changeScene(new StationScene(this.app, this.game, this.startLoc, this.startPlanet));
     }
 
     drawSkipButton () {
@@ -97,7 +135,7 @@ export class BootupScene extends Container implements IScene {
         skip.eventMode = 'dynamic';
         skip.cursor = 'pointer';
         skip.on('pointertap', () => {
-            Manager.changeScene(new StationScene(this.app, this.game));
+            this.startGame();
         });
         skip.on('mouseover', (e) => {
             skip.style.fill = 0xff0000;
@@ -118,7 +156,7 @@ export class BootupScene extends Container implements IScene {
             this.text.text = '';
         } else
         if (line === '!CONTINUE!') {
-            Manager.changeScene(new StationScene(this.app, this.game));
+            this.startGame();
         } else if (line) {
             this.text.text = `${this.text.text}${line}`;
         }

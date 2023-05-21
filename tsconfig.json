@@ -5,6 +5,7 @@
         "sourceMap": true,
         "target": "es2015",
         "module": "ESNext",
+        "baseUrl": "./",
     
         // Rules for your code
         "strict": true,
@@ -21,6 +22,9 @@
         "resolveJsonModule": true,
         "allowSyntheticDefaultImports": true,
         "experimentalDecorators": true,
+        "paths": {
+            "@rApp/*": ["src/*"]
+          },
 
     },
     // Folder for your code

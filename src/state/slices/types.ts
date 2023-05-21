@@ -16,6 +16,13 @@ export enum INSTALLATION_TYPE {
     OUTPOST = 'OUTPOST',
 }
 
+export enum GENERATOR_INCOME_TYPE {
+    POWER = 'POWER',
+    METAL = 'METAL',
+    METALLOID = 'METALLOID',
+    HYDROGEN = 'HYDROGEN',
+}
+
 export interface Installations {
     [key: string]: Installation;
 }
@@ -42,6 +49,17 @@ export interface SolarSystems {
 
 export interface GameConfig {
     seed: string;
+}
+
+export enum GENERATOR_TYPE {
+    SOLAR_PANELS = 'SOLAR_PANELS'
+}
+
+export interface Generator {
+    incomeType: RESOURCES,
+    type: GENERATOR_TYPE,
+    income: number,
+    level: number,
 }
 
 // ******************************************************
