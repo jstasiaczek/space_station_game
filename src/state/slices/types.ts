@@ -27,15 +27,12 @@ export interface Installations {
     [key: string]: Installation;
 }
 
-export interface Generator {
-
-}
-
 export interface Installation {
     id: string;
     resources: InstallationResurces;
     type: INSTALLATION_TYPE;
     generators: Generator[];
+    location: string;
 }
 
 export interface Object {
@@ -49,17 +46,22 @@ export interface SolarSystems {
 
 export interface GameConfig {
     seed: string;
+    currentScreen: string;
+    selectedLocation?: string;
+    selectedObject?: string;
+
 }
 
 export enum GENERATOR_TYPE {
-    SOLAR_PANELS = 'SOLAR_PANELS'
+    SOLAR_PANELS = 'SOLAR_PANELS',
 }
 
 export interface Generator {
-    incomeType: RESOURCES,
-    type: GENERATOR_TYPE,
-    income: number,
-    level: number,
+    incomeType: RESOURCES;
+    type: GENERATOR_TYPE;
+    income: number;
+    level: number;
+    name: string;
 }
 
 // ******************************************************

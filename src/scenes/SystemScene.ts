@@ -2,7 +2,7 @@ import { Application, Container, Sprite, TextStyle, Text, Graphics } from "pixi.
 import RandSeed from 'rand-seed';
 import { IScene, Manager } from '../Manager';
 import { Game } from '../Game';
-import { StationScene } from './StationScene';
+import { ObjectScene } from './ObjectScene';
 import { generateSolarSystem } from "../utils/starSystem";
 import { SolarSystem, SpaceObject } from "../utils/starSystem.types";
 

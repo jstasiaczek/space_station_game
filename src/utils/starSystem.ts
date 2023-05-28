@@ -124,7 +124,7 @@ export const generateStartSolarSystem = (rand: RandSeed): SolarSystem => {
 
 export const generateGalaxy = (rand: RandSeed): Galaxy => {
     // TODO: generate many star systems, currently only start
-    return {
+    return {    
         stars: [
             {
                 x: 1,

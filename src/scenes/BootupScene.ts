@@ -1,16 +1,17 @@
-import { Application, Container, Sprite, TextStyle, Text, Graphics } from "pixi.js";
+import { Application, Container, Text, Graphics } from "pixi.js";
 import { IScene, Manager } from '../Manager';
 import { Game } from '../Game';
-import { StationScene } from './StationScene';
+import { ObjectScene } from './ObjectScene';
 import { configSlice } from "@rApp/state/slices/config.slice";
 import { galaxySlice } from "@rApp/state/slices/galaxy.slice";
 import { generateGalaxy } from "@rApp/utils/starSystem";
 import RandSeed from 'rand-seed';
 import { GalaxyStar, SpaceObject } from "@rApp/utils/starSystem.types";
 import { installationSlice } from "@rApp/state/slices/installation.slice";
-import { GENERATOR_INCOME_TYPE, GENERATOR_TYPE, INSTALLATION_TYPE, RESOURCES } from "@rApp/state/slices/types";
+import { GENERATOR_TYPE, INSTALLATION_TYPE, RESOURCES } from "@rApp/state/slices/types";
 import { initInstallationResources } from "@rApp/state/slices/typesUtils";
-import { MenuScene } from "./MenuScene";
+import { getGalaxy } from '@rApp/state/selector';
+import { getSolarGeneratorByLvl } from '@rApp/state/slices/generatorsDesc';
 
 const textLines: {[key: number]: string} = {
     1: ' .',
@@ -66,7 +67,7 @@ export class BootupScene extends Container implements IScene {
     private timeDelta: number;
     private timeDeltaPassed: number;
     private text: Text;
-    private startLoc : GalaxyStar;
+    private startLoc : GalaxyStar|undefined;
     private startPlanet: SpaceObject | undefined;
 
     constructor(app: Application, game: Game) {
@@ -80,29 +81,7 @@ export class BootupScene extends Container implements IScene {
         this.timeDeltaPassed = 0;
 
         this.drawFrame();
-
-        const seed = '12345';
-        this.game.store.dispatch(configSlice.actions.updateSeed(seed));
-        this.game.store.dispatch(galaxySlice.actions.replace(generateGalaxy(new RandSeed(seed))));
-        // get start location
-        // TODO: find some better way
-        this.startLoc = this.game.store.getState().galaxy.stars[0];
-        const startPlanet = this.startLoc.system.objects.find(object => object.isStart === true);
-
-        this.startPlanet = startPlanet;
-        this.game.store.dispatch(installationSlice.actions.installationAdd({
-            generators: [
-                {
-                    income: 0.1,
-                    incomeType: RESOURCES.HYDROGEN,
-                    type: GENERATOR_TYPE.SOLAR_PANELS,
-                    level: 1,
-                }
-            ],
-            type: INSTALLATION_TYPE.STATION,
-            id: `${startPlanet?.name}-${INSTALLATION_TYPE.STATION.slice(0, 3)}01`,
-            resources: initInstallationResources(),
-        }));
+        this.generateData();
 
         const text = new Text('booting', {
             fontFamily: 'Pixel',
@@ -118,8 +97,42 @@ export class BootupScene extends Container implements IScene {
         this.drawSkipButton();
     }
 
+    generateData() {
+        //const seed = String(Date.now());
+        // for testing
+        const seed = '12345';
+        this.game.store.dispatch(galaxySlice.actions.replace(generateGalaxy(new RandSeed(seed))));
+
+        getGalaxy(this.game.store).stars.forEach(galaxyStar => {
+            galaxyStar.system.objects.forEach(object => {
+                if (!object.isStart) {
+                    return;
+                }
+                this.startLoc = galaxyStar;
+                this.startPlanet = object;
+            })
+        });
+
+        this.game.store.dispatch(configSlice.actions.update({
+            seed,
+            currentScreen: 'station',
+            selectedLocation: this.startLoc?.system.star.name,
+            selectedObject: this.startPlanet?.name,
+        }));
+
+        this.game.store.dispatch(installationSlice.actions.installationAdd({
+            type: INSTALLATION_TYPE.STATION,
+            id: `${this.startPlanet?.name}-${INSTALLATION_TYPE.STATION.slice(0, 3)}01`,
+            resources: initInstallationResources(),
+            location: this.startPlanet?.name || '',
+            generators: [
+                getSolarGeneratorByLvl(1),
+            ],
+        }));
+    }
+
     startGame() {
-        Manager.changeScene(new StationScene(this.app, this.game, this.startLoc, this.startPlanet));
+        Manager.changeScene(new ObjectScene(this.app, this.game));
     }
 
     drawSkipButton () {
