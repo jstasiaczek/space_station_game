@@ -1,4 +1,4 @@
-import { Application, Container, Graphics } from "pixi.js";
+import { Application, Container, Graphics, Rectangle } from "pixi.js";
 
 export class Veil extends Container {
     protected screenWidth: number;
@@ -17,7 +17,7 @@ export class Veil extends Container {
         graphy.lineStyle(2, 0x000000);
         graphy.drawRect(0, 0, this.screenWidth, this.screenHeight);
         graphy.endFill();
-        this.eventMode ='passive';
+        this.eventMode ='static';
 
         this.addChild(graphy);
     }

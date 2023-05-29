@@ -98,7 +98,9 @@ export class ObjectScene extends Container implements IScene {
 
     drawGenerators() {
         this.clearPopup();
-        this.popup = new GeneratorPopup(this.app, this.game, '');
+        this.popup = new GeneratorPopup(this.app, this.game, '', () => {
+            this.clearPopup();
+        });
         this.veil = new Veil(this.app);
         this.canvas.addChild(this.veil);
         this.canvas.addChild(this.popup);
