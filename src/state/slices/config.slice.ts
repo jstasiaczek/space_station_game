@@ -7,6 +7,7 @@ const initialState: GameConfig = {
     currentScreen: '',
     selectedLocation: '',
     selectedObject: '',
+    selectedInstallation: '',
 }
 
 export const configSlice= createSlice({
@@ -19,17 +20,22 @@ export const configSlice= createSlice({
         }),
         updateScreen: (store, action: PayloadAction<string>) => ({
             ...store,
-            seed: action.payload,
+            currentScreen: action.payload,
         }),
-        updateSelectedScreen: (store, action: PayloadAction<string>) => ({
+        updateSelectedLocation: (store, action: PayloadAction<string>) => ({
             ...store,
-            seed: action.payload,
+            selectedLocation: action.payload,
         }),
         updateSelectedObject: (store, action: PayloadAction<string>) => ({
             ...store,
-            seed: action.payload,
+            selectedObject: action.payload,
+        }),
+        updateSelectedInstallation: (store, action: PayloadAction<string|undefined>) => ({
+            ...store,
+            selectedInstallation: action.payload,
         }),
         update: (store, action: PayloadAction<GameConfig>) => ({
+            ...store,
             ...action.payload,
         }),
     }

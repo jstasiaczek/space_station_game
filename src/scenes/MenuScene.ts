@@ -3,6 +3,7 @@ import { IScene, Manager } from '../Manager';
 import { Game } from '../Game';
 import { BootupScene } from "./BootupScene";
 import { SystemScene } from "./SystemScene";
+import { Button } from "@rApp/ui/Button";
 
 export class MenuScene extends Container implements IScene {
     private readonly screenWidth: number;
@@ -28,42 +29,26 @@ export class MenuScene extends Container implements IScene {
         logo.x = this.screenWidth / 2;
         logo.y = 50 +  246 / 2;
 
-        const startGame = new Text("Start New Game", new TextStyle({
+        const startGame = new Button(400, 60, "Start New Game", new TextStyle({
             fontFamily: "Pixel",
             fill: 0xffffff,
-            fontSize: 18
+            fontSize: 20
         }));
-        startGame.x = this.screenWidth / 2;
+        startGame.x = this.screenWidth / 2 - 200;
         startGame.y = 50 + 246 + 50;
-        startGame.anchor.set(0.5);
         startGame.eventMode = 'dynamic';
-        startGame.cursor = 'pointer';
-        startGame.on('mouseover', (e) => {
-            startGame.style.fill = 0xff0000;
-        });
-        startGame.on('mouseout', (e) => {
-            startGame.style.fill = 0xffffff;
-        });
         startGame.on('pointertap', (e) => {
             Manager.changeScene(new BootupScene(this.app, this.game));
         });
 
-        const viewSystem = new Text("View System", new TextStyle({
+        const viewSystem = new Button(400, 60, "View System", new TextStyle({
             fontFamily: "Pixel",
             fill: 0xffffff,
-            fontSize: 18
+            fontSize: 20
         }));
-        viewSystem.x = this.screenWidth / 2;
-        viewSystem.y = 50 + 246 + 100;
-        viewSystem.anchor.set(0.5);
+        viewSystem.x = this.screenWidth / 2 - 200;
+        viewSystem.y = 50 + 246 + 120;
         viewSystem.eventMode = 'dynamic';
-        viewSystem.cursor = 'pointer';
-        viewSystem.on('mouseover', (e) => {
-            viewSystem.style.fill = 0xff0000;
-        });
-        viewSystem.on('mouseout', (e) => {
-            viewSystem.style.fill = 0xffffff;
-        });
         viewSystem.on('pointertap', (e) => {
             Manager.changeScene(new SystemScene(this.app, this.game));
         });

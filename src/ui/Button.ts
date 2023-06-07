@@ -39,8 +39,9 @@ export class Button extends Container {
 
         this.eventMode = 'dynamic';
         this.cursor = 'pointer';
-        this.on('mouseover', handleEvent(0xff0000, 0x000000, 0xa3a3a3))
-        this.on('mouseout', handleEvent(0xffffff, 0x000000, 0xffffff))
+        this.on('pointerover', handleEvent(0xff0000, 0x000000, 0xa3a3a3));
+        this.on('pointerout', handleEvent(0xffffff, 0x000000, 0xffffff));
+        this.on('pointertap', handleEvent(0xffffff, 0x000000, 0xffffff));
 
         this.addChild(graphy);
         this.addChild(text);

@@ -45,10 +45,10 @@ export class SystemScene extends Container implements IScene {
         reset.on('pointertap', () => {
             this.seed = String(Date.now());
         });
-        reset.on('mouseover', (e) => {
+        reset.on('pointerover', (e) => {
             reset.style.fill = 0xff0000;
         });
-        reset.on('mouseout', (e) => {
+        reset.on('pointerout', (e) => {
             reset.style.fill = 0xffffff;
         });
 

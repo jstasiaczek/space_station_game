@@ -1,26 +1,31 @@
-import { Application, Container, Sprite, TextStyle, Text, FederatedPointerEvent } from "pixi.js";
+import { Application, Container, Sprite, TextStyle, Text, FederatedPointerEvent, Graphics } from "pixi.js";
 import { IScene } from '../Manager';
 import { Game } from '../Game';
 import { GalaxyStar, SpaceObject } from "@rApp/utils/starSystem.types";
 import { TimeUpdater } from '@rApp/utils/timeUpdater';
+import { PositionIncrementer } from '@rApp/utils/positionIncrementer';
 import { RESOURCES } from "@rApp/state/slices/types";
-import { getConfig, getGalaxy } from "@rApp/state/selector";
+import { getConfig, getGalaxy, getInstallations } from "@rApp/state/selector";
 import { GeneratorPopup } from '../popup/GeneratorPopup';
+import { SelectPopup } from '../popup/SelectPopup';
 import { Button } from '../ui/Button';
 import { Veil } from '../popup/Veil';
+import { Installation } from "@rApp/state/slices/types";
+import { configSlice } from "@rApp/state/slices/config.slice";
 
 export class ObjectScene extends Container implements IScene {
     private readonly screenWidth: number;
     private readonly screenHeight: number;
     private app: Application;
     private game: Game;
-    private statusText: Text;
+    private statusText: Text = new Text();
     private textUpdater: TimeUpdater = new TimeUpdater();
     private location?: GalaxyStar;
     private object?: SpaceObject;
     private canvas: Container;
     private popup?: Container;
     private veil?: Container;
+    private selectedInstallation?: string;
 
     constructor(app: Application, game: Game) {
         super();
@@ -30,11 +35,29 @@ export class ObjectScene extends Container implements IScene {
         this.app = app;
         this.canvas = new Container();
         this.updateLocation();
+        const installations = this.getInstallationsList();
+        if (installations.length > 1) {
+            this.drawSelectMenu(installations, false);
+        } else if (installations.length === 1) {
+            this.selectedInstallation = installations[0].id;
+            this.game.store.dispatch(configSlice.actions.updateSelectedInstallation(this.selectedInstallation));
+            this.drawStationScreen();
+        }
+    }
 
+    clearScreen() {
+        this.canvas && this.canvas.removeChild(this.canvas);
+        this.canvas?.destroy();
+        this.canvas = new Container();
+        this.addChild(this.canvas);
+    }
+
+    drawStationScreen() {
+        this.clearScreen();
         this.statusText = this.drawStatus(this.canvas);
         this.drawStation(this.canvas);
-        this.addChild(this.canvas);
         this.drawMenu(this.canvas);
+        this.addChild(this.canvas);
     }
 
     updateLocation() {
@@ -42,6 +65,35 @@ export class ObjectScene extends Container implements IScene {
         this.location = getGalaxy(this.game.store)
             .stars.find(star => star.system.star.name === selectedLocation);
         this.object = this.location?.system.objects.find(object => object.name === selectedObject);
+    }
+
+    drawSelectMenu(installations?: Installation[], closeable: boolean = true) {
+        if (!installations) {
+            installations = this.getInstallationsList();
+        }
+        this.clearPopup();
+        this.popup = new SelectPopup(this.app, this.game, () => {
+            this.clearPopup();
+        }, closeable, this.getInstallationsList());
+        this.veil = new Veil(this.app);
+        this.canvas.addChild(this.veil);
+        this.canvas.addChild(this.popup);
+        console.log(this.canvas);
+    }
+
+    getInstallationsList() {
+        if (!this.object) {
+            return [];
+        }
+        const installations = getInstallations(this.game.store);
+        const keys = Object.keys(installations);
+        const result : Installation[] = [];
+        keys.forEach(key => {
+            if (installations[key].location === this.object?.name) {
+                result.push(installations[key]);
+            }
+        })
+        return result;
     }
 
     getLocationName() : string {
@@ -75,16 +127,15 @@ export class ObjectScene extends Container implements IScene {
     }
 
     getButton(label: string, y: number, onClick?: (e: FederatedPointerEvent) => void) {
-        const button = new Button(200, 50, label, new TextStyle({
+        const button = new Button(220, 50, label, new TextStyle({
             fontFamily: "PixelMono",
             fill: 0xffffff,
             fontSize: 16,
             lineHeight: 18,
         }));
-        button.x = this.screenWidth - 220;
+        button.x = this.screenWidth - 240;
         button.eventMode = 'dynamic';
         button.y = y;
-        console.log('label', onClick);
         onClick && button.on('pointertap', onClick);
         return button;
     }
@@ -96,9 +147,9 @@ export class ObjectScene extends Container implements IScene {
         this.veil?.destroy();
     }
 
-    drawGenerators() {
+    drawGeneratorsPopup() {
         this.clearPopup();
-        this.popup = new GeneratorPopup(this.app, this.game, '', () => {
+        this.popup = new GeneratorPopup(this.app, this.game, () => {
             this.clearPopup();
         });
         this.veil = new Veil(this.app);
@@ -107,18 +158,18 @@ export class ObjectScene extends Container implements IScene {
     }
 
     drawMenu(canvas: Container) {
-        const buttonGen = this.getButton('Generators', 20, () => {
-            console.log('click');
-            this.drawGenerators();
-        });
-        const buttonMod = this.getButton('Modules', 80);
-        const buttonSh = this.getButton('Ships', 140);
-        const buttonSt = this.getButton('Status', 200);
+        const incremeter = PositionIncrementer.getInstance(20, 60);
+        const buttonInst = this.getButton('Installations', incremeter.getNext(), () => this.drawSelectMenu());
+        const buttonGen = this.getButton('Generators', incremeter.getNext(), () => this.drawGeneratorsPopup());
+        const buttonMod = this.getButton('Modules', incremeter.getNext());
+        const buttonSh = this.getButton('Ships', incremeter.getNext());
+        const buttonSt = this.getButton('Status', incremeter.getNext());
 
         canvas.addChild(buttonGen);
         canvas.addChild(buttonMod);
         canvas.addChild(buttonSh);
         canvas.addChild(buttonSt);
+        canvas.addChild(buttonInst);
     }
 
     drawStation(canvas: Container) {
@@ -140,10 +191,10 @@ export class ObjectScene extends Container implements IScene {
 
     update(): void {
         this.textUpdater.onUpdate((timestamp) => {
-            if (!this.object) {
+            if (!this.object || !this.selectedInstallation) {
                 return;
             }
-            const station = this.game.store.getState().installations[`${this.object?.name}-STA01`];
+            const station = this.game.store.getState().installations[this.selectedInstallation];
 
             let text = `${station.resources[RESOURCES.POWER]}\n`;
             text += `${station.resources[RESOURCES.METALS]}\n`;
@@ -151,5 +202,17 @@ export class ObjectScene extends Container implements IScene {
             text += `${station.resources[RESOURCES.HYDROGEN]}\n`;
             this.statusText.text = text;
         });
+        const installation = getConfig(this.game.store).selectedInstallation;
+        if (installation != this.selectedInstallation) {
+            this.selectedInstallation = installation;
+            if (this.selectedInstallation === undefined) {
+                console.log('draw select');
+                this.clearScreen();
+                this.drawSelectMenu(undefined, false);
+            } else {
+                this.clearPopup();
+                this.drawStationScreen();
+            }
+        }
     }
 }

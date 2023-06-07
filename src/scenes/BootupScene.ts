@@ -150,10 +150,10 @@ export class BootupScene extends Container implements IScene {
         skip.on('pointertap', () => {
             this.startGame();
         });
-        skip.on('mouseover', (e) => {
+        skip.on('pointerover', (e) => {
             skip.style.fill = 0xff0000;
         });
-        skip.on('mouseout', (e) => {
+        skip.on('pointerout', (e) => {
             skip.style.fill = 0xffffff;
         });
 

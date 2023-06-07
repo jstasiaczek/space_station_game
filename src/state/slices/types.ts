@@ -49,6 +49,7 @@ export interface GameConfig {
     currentScreen: string;
     selectedLocation?: string;
     selectedObject?: string;
+    selectedInstallation?: string;
 
 }
 

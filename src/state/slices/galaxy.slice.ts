@@ -1,4 +1,4 @@
-import { Draft, createSlice } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { Galaxy } from '../../utils/starSystem.types';
 
