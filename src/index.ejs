@@ -5,7 +5,7 @@
 	<title>Space Station Game</title>
 
 	<meta id="viewport" name="viewport"
-		content="width=device-width, minimum-scale=1.0, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no, viewport-fit=cover" />
+		content="width=device-width, minimum-scale=0.1, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=yes, viewport-fit=cover" />
 	<meta name="apple-mobile-web-app-capable" content="yes">
 
 	<style>
@@ -31,8 +31,10 @@
 			padding: 0;
 			height: 100%;
 			overflow: hidden;
+			font-family: PixelMono;
+			color: #fff;
+			font-size: 16px;
 		}
-
 		#pixi-content {
 			background: #000000;
 			width: 100%;
@@ -65,6 +67,7 @@
 	<div class="font3">preload</div>
 	<div class="font4">preload</div>
 	<div id="pixi-content"><canvas id="pixi-canvas"></div>
+	<div id="popup-container"></div>
 </body>
 
 </html>

@@ -58,12 +58,26 @@ module.exports = (env, argv) => {
                     test: /\.ts(x)?$/,
                     loader: 'ts-loader',
                     exclude: /node_modules/
-                }
-            ]
+                },
+                {
+                    test: /\.s[ac]ss$/i,
+                    use: [
+                      // Creates `style` nodes from JS strings
+                      "style-loader",
+                      // Translates CSS into CommonJS
+                      "css-loader",
+                      // Compiles Sass to CSS
+                      "sass-loader",
+                    ],
+                },
+            ],
         },
         resolve: {
             alias: {
                 '@rApp': join(__dirname, 'src'),
+                "react": "preact/compat",
+                "react-dom": "preact/compat",  
+                "react/jsx-runtime": "preact/jsx-runtime",
             },
             extensions: [
                 '.tsx',

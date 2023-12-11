@@ -1,0 +1,50 @@
+.popup {
+    border: 2px solid white;
+    padding: 8px;
+}
+
+.popup500 {
+    width: 500px;
+    min-height: 300px;
+}
+
+.popup800 {
+    width: 800px;
+    min-height: 300px;
+}
+
+
+.popup_title {
+    font-family: 'PixelMonoBold';
+    display: flex;
+    .title {
+        flex-grow: 2;
+    }
+    .close {
+        display: block;
+        flex-shrink: 0;
+        cursor: pointer;
+    }
+}
+
+.blank_list {
+    list-style: none;
+    padding: 0px;
+    li {
+        margin-bottom: 8px;
+    }
+}
+
+.button {
+    border: 1px solid white;
+    background-color: transparent;
+    color: white;
+    padding: 16px 8px;
+    font-family: PixelMono;
+    min-width: 300px;
+    cursor: pointer;
+    &:hover {
+        color: red;
+        border-color:  #a3a3a3;
+    }
+}

@@ -3,7 +3,7 @@
         // Settings for the compiler
         "outDir": "./dist/",
         "sourceMap": true,
-        "target": "es2015",
+        "target": "ES6",
         "module": "ESNext",
         "baseUrl": "./",
     
@@ -21,14 +21,18 @@
         "esModuleInterop": true,
         "resolveJsonModule": true,
         "allowSyntheticDefaultImports": true,
-        "experimentalDecorators": true,
         "paths": {
-            "@rApp/*": ["src/*"]
+            "@rApp/*": ["src/*"]    
           },
+
+          // preact config
+        "jsx": "react-jsx",
+        "jsxImportSource": "preact"
+        
 
     },
     // Folder for your code
     "include": [
-        "./src/*"
+        "./src/**/*"
     ]
 }

@@ -8,10 +8,10 @@ import { generateGalaxy } from "@rApp/utils/starSystem";
 import RandSeed from 'rand-seed';
 import { GalaxyStar, SpaceObject } from "@rApp/utils/starSystem.types";
 import { installationSlice } from "@rApp/state/slices/installation.slice";
-import { GENERATOR_TYPE, INSTALLATION_TYPE, RESOURCES } from "@rApp/state/slices/types";
+import { INSTALLATION_TYPE } from "@rApp/state/slices/types";
 import { initInstallationResources } from "@rApp/state/slices/typesUtils";
 import { getGalaxy } from '@rApp/state/selector';
-import { getSolarGeneratorByLvl } from '@rApp/state/slices/generatorsDesc';
+import { getHydrogenGeneratorByLvl, getSolarGeneratorByLvl } from '@rApp/state/slices/generatorsDesc';
 
 const textLines: {[key: number]: string} = {
     1: ' .',
@@ -127,6 +127,7 @@ export class BootupScene extends Container implements IScene {
             location: this.startPlanet?.name || '',
             generators: [
                 getSolarGeneratorByLvl(1),
+                getHydrogenGeneratorByLvl(1),
             ],
         }));
     }

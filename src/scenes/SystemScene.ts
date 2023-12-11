@@ -1,8 +1,7 @@
-import { Application, Container, Sprite, TextStyle, Text, Graphics } from "pixi.js";
+import { Application, Container, Sprite, Text, Graphics } from "pixi.js";
 import RandSeed from 'rand-seed';
-import { IScene, Manager } from '../Manager';
+import { IScene } from '../Manager';
 import { Game } from '../Game';
-import { ObjectScene } from './ObjectScene';
 import { generateSolarSystem } from "../utils/starSystem";
 import { SolarSystem, SpaceObject } from "../utils/starSystem.types";
 

@@ -55,6 +55,7 @@ export interface GameConfig {
 
 export enum GENERATOR_TYPE {
     SOLAR_PANELS = 'SOLAR_PANELS',
+    HYDROGEN_COLLECTOR = 'HYDROGEN_COLLECTOR',
 }
 
 export interface Generator {

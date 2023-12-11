@@ -1,17 +1,26 @@
-import { Application, Container, Sprite, TextStyle, Text, FederatedPointerEvent, Graphics } from "pixi.js";
+import { 
+    Application,
+    Container,
+    Sprite,
+    TextStyle,
+    Text,
+    FederatedPointerEvent,
+} from "pixi.js";
 import { IScene } from '../Manager';
 import { Game } from '../Game';
 import { GalaxyStar, SpaceObject } from "@rApp/utils/starSystem.types";
 import { TimeUpdater } from '@rApp/utils/timeUpdater';
 import { PositionIncrementer } from '@rApp/utils/positionIncrementer';
-import { RESOURCES } from "@rApp/state/slices/types";
+import { Generator, RESOURCES } from "@rApp/state/slices/types";
 import { getConfig, getGalaxy, getInstallations } from "@rApp/state/selector";
-import { GeneratorPopup } from '../popup/GeneratorPopup';
+import { GeneratorHtmlPopup } from '../popup/GeneratorHtmlPopup';
+import { HtmlPopup } from '../popup/HtmlPopup';
 import { SelectPopup } from '../popup/SelectPopup';
 import { Button } from '../ui/Button';
 import { Veil } from '../popup/Veil';
 import { Installation } from "@rApp/state/slices/types";
 import { configSlice } from "@rApp/state/slices/config.slice";
+import { InstallationSelectHtmlPopoup } from "../popup/InstallationSelectHtmlPopoup";
 
 export class ObjectScene extends Container implements IScene {
     private readonly screenWidth: number;
@@ -72,7 +81,7 @@ export class ObjectScene extends Container implements IScene {
             installations = this.getInstallationsList();
         }
         this.clearPopup();
-        this.popup = new SelectPopup(this.app, this.game, () => {
+        this.popup = new InstallationSelectHtmlPopoup(this.app, this.game, () => {
             this.clearPopup();
         }, closeable, this.getInstallationsList());
         this.veil = new Veil(this.app);
@@ -93,6 +102,22 @@ export class ObjectScene extends Container implements IScene {
             }
         })
         return result;
+    }
+
+    getGeneratorsList(): Generator[] {
+        if (!this.object || !this.selectedInstallation) {
+            return [];
+        }
+
+        const installations = getInstallations(this.game.store);
+
+        const installation = installations[this.selectedInstallation];
+
+        if (!installation) {
+            return [];
+        }
+
+        return installation.generators;
     }
 
     getLocationName() : string {
@@ -148,12 +173,13 @@ export class ObjectScene extends Container implements IScene {
 
     drawGeneratorsPopup() {
         this.clearPopup();
-        this.popup = new GeneratorPopup(this.app, this.game, () => {
+        this.popup = new GeneratorHtmlPopup(this.app, this.game, () => {
             this.clearPopup();
-        });
+        }, this.getGeneratorsList());
+        //new HtmlPopup(this.game);
         this.veil = new Veil(this.app);
         this.canvas.addChild(this.veil);
-        this.canvas.addChild(this.popup);
+        // this.canvas.addChild(this.popup);
     }
 
     drawMenu(canvas: Container) {

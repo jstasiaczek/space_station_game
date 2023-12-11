@@ -1,4 +1,4 @@
-import { Application, Container, Sprite, TextStyle, Text } from "pixi.js";
+import { Application, Container, Sprite, TextStyle } from "pixi.js";
 import { IScene, Manager } from '../Manager';
 import { Game } from '../Game';
 import { BootupScene } from "./BootupScene";

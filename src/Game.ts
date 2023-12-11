@@ -6,7 +6,6 @@ import { StoreData, setupStore } from './state/store/configureStore';
 import { ToolkitStore } from "@reduxjs/toolkit/dist/configureStore";
 import { TimeUpdater } from '@rApp/utils/timeUpdater';
 import { installationSlice } from "./state/slices/installation.slice";
-import { RESOURCES } from "./state/slices/types";
 export class Game extends EventEmitter {
     private app: Application;
     private static instance: Game;
@@ -38,12 +37,12 @@ export class Game extends EventEmitter {
                 installation.generators.forEach(generator => {
                     this.store.dispatch(installationSlice.actions.updateResource({
                         installationId: installation.id,
-                        resource: RESOURCES.POWER,
+                        resource: generator.incomeType,
                         value: generator.income,
-                    }))
-                })
-            })
-        })
+                    }));
+                });
+            });
+        });
     }
 
     drawBackground() {
