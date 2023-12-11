@@ -1,7 +1,7 @@
-import { IHtmlPopupAppProps } from "../HtmlPopup";
 import { FunctionalComponent } from 'preact';
-import './popups.scss';
 import { Generator } from "../../state/slices/types";
+import { IHtmlPopupAppProps } from "../HtmlPopup";
+import './popups.scss';
 
 export interface GeneratorPopupAppProps extends IHtmlPopupAppProps {
     generators: Generator[];

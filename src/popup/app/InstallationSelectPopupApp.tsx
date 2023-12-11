@@ -17,18 +17,20 @@ export const InstallationSelectPopupApp: FunctionalComponent<InstallationSelectP
     onSelect,
     closeable,
 }) => {
-    return <div className="popup popup500">
+    return <div className="popup popup400">
         	<div className="popup_title">
                 <div className="title">{title}</div>
                 {closeable && <div onClick={onClosePopup} className="close">X</div>}
             </div>
-            <ul className="blank_list">
+            <div className="popup_content">
+                <ul className="blank_list">
                     {installations.map(installation => <li key={installation.id}>
-                            <button className="button" onClick={() => onSelect(installation.id)}>
+                            <button className="button button--full" onClick={() => onSelect(installation.id)}>
                                 {installation.id}
                             </button>
                         </li>)}
-                        <li><button className="button" onClick={onClear}>DEBUG: clear</button></li>
+                        <li><button className="button button--full" onClick={onClear}>DEBUG: clear</button></li>
                 </ul>
+            </div>
         </div>;
 };

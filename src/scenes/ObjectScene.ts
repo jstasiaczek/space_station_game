@@ -14,8 +14,6 @@ import { PositionIncrementer } from '@rApp/utils/positionIncrementer';
 import { Generator, RESOURCES } from "@rApp/state/slices/types";
 import { getConfig, getGalaxy, getInstallations } from "@rApp/state/selector";
 import { GeneratorHtmlPopup } from '../popup/GeneratorHtmlPopup';
-import { HtmlPopup } from '../popup/HtmlPopup';
-import { SelectPopup } from '../popup/SelectPopup';
 import { Button } from '../ui/Button';
 import { Veil } from '../popup/Veil';
 import { Installation } from "@rApp/state/slices/types";
@@ -176,10 +174,8 @@ export class ObjectScene extends Container implements IScene {
         this.popup = new GeneratorHtmlPopup(this.app, this.game, () => {
             this.clearPopup();
         }, this.getGeneratorsList());
-        //new HtmlPopup(this.game);
         this.veil = new Veil(this.app);
         this.canvas.addChild(this.veil);
-        // this.canvas.addChild(this.popup);
     }
 
     drawMenu(canvas: Container) {

@@ -1,4 +1,4 @@
-import { Application, Container, Graphics, Rectangle } from "pixi.js";
+import { Application, Container, Graphics } from "pixi.js";
 
 export class Veil extends Container {
     protected screenWidth: number;
