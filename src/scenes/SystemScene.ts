@@ -4,22 +4,15 @@ import { IScene } from '../Manager';
 import { Game } from '../Game';
 import { generateSolarSystem } from "../utils/starSystem";
 import { SolarSystem, SpaceObject } from "../utils/starSystem.types";
+import { SceneAbstract } from "./SceneAbscract";
 
 
-export class SystemScene extends Container implements IScene {
-    private readonly screenWidth: number;
-    private readonly screenHeight: number;
-    private app: Application;
-    private game: Game;
+export class SystemScene extends SceneAbstract implements IScene {
     private seed: string = '';
     private currentSeed: string = '';
 
     constructor(app: Application, game: Game) {
-        super();
-        this.screenWidth = app.screen.width;
-        this.screenHeight = app.screen.height;
-        this.game = game;
-        this.app = app;
+        super(app, game);
 
         this.currentSeed = this.seed = String(Date.now());
         const system = generateSolarSystem(new RandSeed(this.seed));

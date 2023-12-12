@@ -12,6 +12,7 @@ import { INSTALLATION_TYPE } from "@rApp/state/slices/types";
 import { initInstallationResources } from "@rApp/state/slices/typesUtils";
 import { getGalaxy } from '@rApp/state/selector';
 import { getHydrogenGeneratorByLvl, getSolarGeneratorByLvl } from '@rApp/state/slices/generatorsDesc';
+import { SceneAbstract } from "./SceneAbscract";
 
 const textLines: {[key: number]: string} = {
     1: ' .',
@@ -58,11 +59,7 @@ const textLines: {[key: number]: string} = {
     50: '!CONTINUE!',
 }
 
-export class BootupScene extends Container implements IScene {
-    private readonly screenWidth: number;
-    private readonly screenHeight: number;
-    private app: Application;
-    private game: Game;
+export class BootupScene extends SceneAbstract implements IScene {
     private startTime: number;
     private timeDelta: number;
     private timeDeltaPassed: number;
@@ -71,11 +68,7 @@ export class BootupScene extends Container implements IScene {
     private startPlanet: SpaceObject | undefined;
 
     constructor(app: Application, game: Game) {
-        super();
-        this.screenWidth = app.screen.width;
-        this.screenHeight = app.screen.height;
-        this.game = game;
-        this.app = app;
+        super(app, game);
         this.startTime = Math.floor(Date.now() / 500);
         this.timeDelta = 0;
         this.timeDeltaPassed = 0;
@@ -101,7 +94,7 @@ export class BootupScene extends Container implements IScene {
         //const seed = String(Date.now());
         // for testing
         const seed = '12345';
-        this.game.store.dispatch(galaxySlice.actions.replace(generateGalaxy(new RandSeed(seed))));
+        this.dispatchAction(galaxySlice.actions.replace(generateGalaxy(new RandSeed(seed))));
 
         getGalaxy(this.game.store).stars.forEach(galaxyStar => {
             galaxyStar.system.objects.forEach(object => {
@@ -113,14 +106,14 @@ export class BootupScene extends Container implements IScene {
             })
         });
 
-        this.game.store.dispatch(configSlice.actions.update({
+        this.dispatchAction(configSlice.actions.update({
             seed,
             currentScreen: 'station',
             selectedLocation: this.startLoc?.system.star.name,
             selectedObject: this.startPlanet?.name,
         }));
 
-        this.game.store.dispatch(installationSlice.actions.installationAdd({
+        this.dispatchAction(installationSlice.actions.installationAdd({
             type: INSTALLATION_TYPE.STATION,
             id: `${this.startPlanet?.name}-${INSTALLATION_TYPE.STATION.slice(0, 3)}01`,
             resources: initInstallationResources(),

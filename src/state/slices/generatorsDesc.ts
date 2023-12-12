@@ -21,14 +21,14 @@ export const SOLAR_PANEL_DESC: GeneratorDesc = {
         {
             income: 1,
             cost: {},
-            lvl: 1
+            lvl: 1,
         },
         {
             income: 5,
             cost: {
                 'METALLOIDS': 100,
             },
-            lvl: 2
+            lvl: 2,
         }
     ]
 };
@@ -41,14 +41,14 @@ export const HYDROGEN_COLLECTOR_DESC: GeneratorDesc = {
         {
             income: 0.1,
             cost: {},
-            lvl: 1
+            lvl: 1,
         },
         {
             income: 1,
             cost: {
                 'METALLOIDS': 100,
             },
-            lvl: 2
+            lvl: 2,
         }
     ]
 };
@@ -60,7 +60,7 @@ export const getSolarGeneratorByLvl = (lvlId: number): Generator => {
         incomeType: RESOURCES.POWER,
         level: lvl.lvl,
         name: SOLAR_PANEL_DESC.name,
-        type: SOLAR_PANEL_DESC.type,
+        type: SOLAR_PANEL_DESC.type
     }
 }
 
@@ -71,6 +71,6 @@ export const getHydrogenGeneratorByLvl = (lvlId: number): Generator => {
         incomeType: RESOURCES.HYDROGEN,
         level: lvl.lvl,
         name: HYDROGEN_COLLECTOR_DESC.name,
-        type: HYDROGEN_COLLECTOR_DESC.type,
+        type: HYDROGEN_COLLECTOR_DESC.type
     }
 }

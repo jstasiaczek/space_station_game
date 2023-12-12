@@ -11,7 +11,9 @@ export const installationSlice = createSlice({
     reducers: {
         updateResource: (state, action: PayloadAction<ResourceAction>) => {
             const { installationId, resource, value } = action.payload;
-            state[installationId].resources[resource] = NP.plus(state[installationId].resources[resource], value);
+            const { current, max } = state[installationId].resources[resource];
+            const updatedCurrent = NP.plus(current, value);
+            state[installationId].resources[resource].current = updatedCurrent > max ? max : updatedCurrent;
             return state;
         },
         installationAdd: (state, action: PayloadAction<Installation>) => {

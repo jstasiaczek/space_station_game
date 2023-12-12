@@ -2,7 +2,7 @@
     "compilerOptions": {
         // Settings for the compiler
         "outDir": "./dist/",
-        "sourceMap": true,
+        "sourceMap": false,
         "target": "ES6",
         "module": "ESNext",
         "baseUrl": "./",

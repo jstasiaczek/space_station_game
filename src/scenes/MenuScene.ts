@@ -4,19 +4,12 @@ import { Game } from '../Game';
 import { BootupScene } from "./BootupScene";
 import { SystemScene } from "./SystemScene";
 import { Button } from "@rApp/ui/Button";
+import { SceneAbstract } from "./SceneAbscract";
 
-export class MenuScene extends Container implements IScene {
-    private readonly screenWidth: number;
-    private readonly screenHeight: number;
-    private app: Application;
-    private game: Game;
+export class MenuScene extends SceneAbstract implements IScene {
 
     constructor(app: Application, game: Game) {
-        super();
-        this.screenWidth = app.screen.width;
-        this.screenHeight = app.screen.height;
-        this.game = game;
-        this.app = app;
+        super(app, game);
 
         this.drawMenu();
     }

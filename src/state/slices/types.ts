@@ -2,13 +2,21 @@
 
 export enum RESOURCES {
     POWER = 'POWER',
-    METALS = 'METALS',
-    METALLOIDS = 'METALLOIDS',
+    METAL = 'METAL',
+    METALLOID = 'METALLOID',
     HYDROGEN = 'HYDROGEN',
 };
 
+export interface ResourceStorage {
+    current: number;
+    max: number;
+    lvl: number;
+    unit: string;
+    type: GENERATOR_INCOME_TYPE;
+}
+
 export interface InstallationResurces {
-    [key : string]: number;
+    [key : string]: ResourceStorage;
 }
 
 export enum INSTALLATION_TYPE {

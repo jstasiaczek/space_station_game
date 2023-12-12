@@ -19,12 +19,9 @@ import { Veil } from '../popup/Veil';
 import { Installation } from "@rApp/state/slices/types";
 import { configSlice } from "@rApp/state/slices/config.slice";
 import { InstallationSelectHtmlPopoup } from "../popup/InstallationSelectHtmlPopoup";
+import { SceneAbstract } from "./SceneAbscract";
 
-export class ObjectScene extends Container implements IScene {
-    private readonly screenWidth: number;
-    private readonly screenHeight: number;
-    private app: Application;
-    private game: Game;
+export class ObjectScene extends SceneAbstract implements IScene {
     private statusText: Text = new Text();
     private textUpdater: TimeUpdater = new TimeUpdater();
     private location?: GalaxyStar;
@@ -35,11 +32,7 @@ export class ObjectScene extends Container implements IScene {
     private selectedInstallation?: string;
 
     constructor(app: Application, game: Game) {
-        super();
-        this.screenWidth = app.screen.width;
-        this.screenHeight = app.screen.height;
-        this.game = game;
-        this.app = app;
+        super(app, game);
         this.canvas = new Container();
         this.updateLocation();
         const installations = this.getInstallationsList();
@@ -72,19 +65,6 @@ export class ObjectScene extends Container implements IScene {
         this.location = getGalaxy(this.game.store)
             .stars.find(star => star.system.star.name === selectedLocation);
         this.object = this.location?.system.objects.find(object => object.name === selectedObject);
-    }
-
-    drawSelectMenu(installations?: Installation[], closeable: boolean = true) {
-        if (!installations) {
-            installations = this.getInstallationsList();
-        }
-        this.clearPopup();
-        this.popup = new InstallationSelectHtmlPopoup(this.app, this.game, () => {
-            this.clearPopup();
-        }, closeable, this.getInstallationsList());
-        this.veil = new Veil(this.app);
-        this.canvas.addChild(this.veil);
-        this.canvas.addChild(this.popup);
     }
 
     getInstallationsList() {
@@ -169,15 +149,6 @@ export class ObjectScene extends Container implements IScene {
         this.veil?.destroy();
     }
 
-    drawGeneratorsPopup() {
-        this.clearPopup();
-        this.popup = new GeneratorHtmlPopup(this.app, this.game, () => {
-            this.clearPopup();
-        }, this.getGeneratorsList());
-        this.veil = new Veil(this.app);
-        this.canvas.addChild(this.veil);
-    }
-
     drawMenu(canvas: Container) {
         const incremeter = PositionIncrementer.getInstance(20, 60);
         const buttonInst = this.getButton('Installations', incremeter.getNext(), () => this.drawSelectMenu());
@@ -210,6 +181,28 @@ export class ObjectScene extends Container implements IScene {
         canvas.addChild(station);
     }
 
+    drawGeneratorsPopup() {
+        this.clearPopup();
+        this.popup = new GeneratorHtmlPopup(this.app, this.game, () => {
+            this.clearPopup();
+        }, this.getGeneratorsList());
+        this.veil = new Veil(this.app);
+        this.canvas.addChild(this.veil);
+    }
+
+    drawSelectMenu(installations?: Installation[], closeable: boolean = true) {
+        if (!installations) {
+            installations = this.getInstallationsList();
+        }
+        this.clearPopup();
+        this.popup = new InstallationSelectHtmlPopoup(this.app, this.game, () => {
+            this.clearPopup();
+        }, closeable, this.getInstallationsList());
+        this.veil = new Veil(this.app);
+        this.canvas.addChild(this.veil);
+        this.canvas.addChild(this.popup);
+    }
+
     update(): void {
         this.textUpdater.onUpdate((timestamp) => {
             if (!this.object || !this.selectedInstallation) {
@@ -217,10 +210,15 @@ export class ObjectScene extends Container implements IScene {
             }
             const station = this.game.store.getState().installations[this.selectedInstallation];
 
-            let text = `${station.resources[RESOURCES.POWER]}\n`;
-            text += `${station.resources[RESOURCES.METALS]}\n`;
-            text += `${station.resources[RESOURCES.METALLOIDS]}\n`;
-            text += `${station.resources[RESOURCES.HYDROGEN]}\n`;
+            const power = station.resources[RESOURCES.POWER];
+            const metal = station.resources[RESOURCES.METAL];
+            const metalloid = station.resources[RESOURCES.METALLOID];
+            const hydrogen = station.resources[RESOURCES.HYDROGEN];
+
+            let text = `${power.current}${power.unit} / ${power.max}${power.unit}\n`;
+            text += `${metal.current}${metal.unit} / ${metal.max}${metal.unit}\n`;
+            text += `${metalloid.current}${metalloid.unit} / ${metalloid.max}${metalloid.unit}\n`;
+            text += `${hydrogen.current}${hydrogen.unit} / ${hydrogen.max}${hydrogen.unit}\n`;
             this.statusText.text = text;
         });
         const installation = getConfig(this.game.store).selectedInstallation;
