@@ -1,1 +1,1 @@
-export const POPUP_CONTAINER_ID = 'popup-container';
+export const POPUP_CONTAINER_ID = 'popup-container'

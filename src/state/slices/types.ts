@@ -8,16 +8,14 @@ export enum RESOURCES {
 };
 
 export interface ResourceStorage {
-    current: number;
-    max: number;
-    lvl: number;
-    unit: string;
-    type: GENERATOR_INCOME_TYPE;
+    current: number
+    max: number
+    lvl: number
+    unit: string
+    type: GENERATOR_INCOME_TYPE
 }
 
-export interface InstallationResurces {
-    [key : string]: ResourceStorage;
-}
+export type InstallationResurces = Record<string, ResourceStorage>
 
 export enum INSTALLATION_TYPE {
     STATION = 'STATION',
@@ -31,33 +29,29 @@ export enum GENERATOR_INCOME_TYPE {
     HYDROGEN = 'HYDROGEN',
 }
 
-export interface Installations {
-    [key: string]: Installation;
-}
+export type Installations = Record<string, Installation>
 
 export interface Installation {
-    id: string;
-    resources: InstallationResurces;
-    type: INSTALLATION_TYPE;
-    generators: Generator[];
-    location: string;
+    id: string
+    resources: InstallationResurces
+    type: INSTALLATION_TYPE
+    generators: Generator[]
+    location: string
 }
 
 export interface Object {
-    id: string;
-    installations: string[];
+    id: string
+    installations: string[]
 }
 
-export interface SolarSystems {
-    [key: string]: Object[];
-}
+export type SolarSystems = Record<string, any[]>
 
 export interface GameConfig {
-    seed: string;
-    currentScreen: string;
-    selectedLocation?: string;
-    selectedObject?: string;
-    selectedInstallation?: string;
+    seed: string
+    currentScreen: string
+    selectedLocation?: string
+    selectedObject?: string
+    selectedInstallation?: string
 
 }
 
@@ -67,11 +61,11 @@ export enum GENERATOR_TYPE {
 }
 
 export interface Generator {
-    incomeType: RESOURCES;
-    type: GENERATOR_TYPE;
-    income: number;
-    level: number;
-    name: string;
+    incomeType: RESOURCES
+    type: GENERATOR_TYPE
+    income: number
+    level: number
+    name: string
 }
 
 // ******************************************************
@@ -79,7 +73,7 @@ export interface Generator {
 // ******************************************************
 
 export interface ResourceAction {
-    installationId: string;
-    resource: RESOURCES,
-    value: number,
+    installationId: string
+    resource: RESOURCES
+    value: number
 }

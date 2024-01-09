@@ -1,18 +1,18 @@
 export class PositionIncrementer {
-    private startValue: number;
-    private step: number;
-    private index: number = 0;
+    private readonly startValue: number
+    private readonly step: number
+    private index: number = 0
 
-    constructor(startValue: number, step: number) {
-        this.startValue = startValue;
-        this.step = step;
+    constructor (startValue: number, step: number) {
+        this.startValue = startValue
+        this.step = step
     }
 
-    public getNext(): number {
-        return this.startValue + this.step * this.index++;
+    public getNext (): number {
+        return this.startValue + this.step * this.index++
     }
 
-    static getInstance(startValue: number, step: number) {
-        return new PositionIncrementer(startValue, step);
+    static getInstance (startValue: number, step: number): PositionIncrementer {
+        return new PositionIncrementer(startValue, step)
     }
 }

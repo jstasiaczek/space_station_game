@@ -1,17 +1,17 @@
-import { createSlice } from '@reduxjs/toolkit';
-import type { PayloadAction } from '@reduxjs/toolkit';
-import { Galaxy } from '../../utils/starSystem.types';
+import { createSlice } from '@reduxjs/toolkit'
+import type { PayloadAction } from '@reduxjs/toolkit'
+import { type Galaxy } from '../../utils/starSystem.types'
 
 const initialState: Galaxy = {
-    stars: [],
+    stars: []
 }
 
-export const galaxySlice= createSlice({
+export const galaxySlice = createSlice({
     name: 'galaxy',
     initialState,
     reducers: {
         replace: (store, action: PayloadAction<Galaxy>) => {
-            return action.payload;
+            return action.payload
         }
     }
-});
+})

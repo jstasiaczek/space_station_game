@@ -1,25 +1,24 @@
-import { Application, Container, Sprite, Text, Graphics } from "pixi.js";
-import RandSeed from 'rand-seed';
-import { IScene } from '../Manager';
-import { Game } from '../Game';
-import { generateSolarSystem } from "../utils/starSystem";
-import { SolarSystem, SpaceObject } from "../utils/starSystem.types";
-import { SceneAbstract } from "./SceneAbscract";
-
+import { type Application, Sprite, Text, Graphics } from 'pixi.js'
+import RandSeed from 'rand-seed'
+import { type IScene } from '../Manager'
+import { type Game } from '../Game'
+import { generateSolarSystem } from '../utils/starSystem'
+import { type SolarSystem, type SpaceObject } from '../utils/starSystem.types'
+import { SceneAbstract } from './SceneAbscract'
 
 export class SystemScene extends SceneAbstract implements IScene {
-    private seed: string = '';
-    private currentSeed: string = '';
+    private seed: string = ''
+    private currentSeed: string = ''
 
-    constructor(app: Application, game: Game) {
-        super(app, game);
+    constructor (app: Application, game: Game) {
+        super(app, game)
 
-        this.currentSeed = this.seed = String(Date.now());
-        const system = generateSolarSystem(new RandSeed(this.seed));
+        this.currentSeed = this.seed = String(Date.now())
+        const system = generateSolarSystem(new RandSeed(this.seed))
 
-        this.drawFrame();
-        this.drawSystem(system);
-        this.drawResetButton();
+        this.drawFrame()
+        this.drawSystem(system)
+        this.drawResetButton()
     }
 
     drawResetButton () {
@@ -27,112 +26,109 @@ export class SystemScene extends SceneAbstract implements IScene {
             fontFamily: 'Pixel',
             fontSize: '18px',
             fill: 0xffffff,
-            lineHeight: 24,
-        });
-        reset.anchor.set(1);
-        reset.x = this.screenWidth - 30;
-        reset.y = this.screenHeight - 30;
-        reset.eventMode = 'dynamic';
-        reset.cursor = 'pointer';
+            lineHeight: 24
+        })
+        reset.anchor.set(1)
+        reset.x = this.screenWidth - 30
+        reset.y = this.screenHeight - 30
+        reset.eventMode = 'dynamic'
+        reset.cursor = 'pointer'
         reset.on('pointertap', () => {
-            this.seed = String(Date.now());
-        });
+            this.seed = String(Date.now())
+        })
         reset.on('pointerover', (e) => {
-            reset.style.fill = 0xff0000;
-        });
+            reset.style.fill = 0xff0000
+        })
         reset.on('pointerout', (e) => {
-            reset.style.fill = 0xffffff;
-        });
+            reset.style.fill = 0xffffff
+        })
 
-        this.addChild(reset);
+        this.addChild(reset)
     }
 
-    degreesToRadians(degrees: number)
-    {
-        var pi = Math.PI;
-        return degrees * (pi/180);
+    degreesToRadians (degrees: number) {
+        const pi = Math.PI
+        return degrees * (pi / 180)
     }
 
-    getPosOnEcllipse(height: number, width: number, angle: number) : {x: number, y: number} {
-        const radians = this.degreesToRadians(angle);
+    getPosOnEcllipse (height: number, width: number, angle: number): { x: number, y: number } {
+        const radians = this.degreesToRadians(angle)
 
-        const x = this.screenWidth / 2 + ((height) * Math.cos(radians));
-        const y = this.screenHeight / 2 + ((width) * Math.sin(radians));
+        const x = this.screenWidth / 2 + ((height) * Math.cos(radians))
+        const y = this.screenHeight / 2 + ((width) * Math.sin(radians))
 
         return {
             x,
-            y,
+            y
         }
     }
 
     drawSystem (system: SolarSystem) {
-        const sun = Sprite.from(`sun/${system.star.type}.png`);
-        sun.anchor.set(0.5);
-        sun.x = this.screenWidth / 2;
-        sun.y = this.screenHeight / 2;
-        sun.width = 96;
-        sun.height = 96;
-        sun.angle = system.star.angle || 0;
+        const sun = Sprite.from(`sun/${system.star.type}.png`)
+        sun.anchor.set(0.5)
+        sun.x = this.screenWidth / 2
+        sun.y = this.screenHeight / 2
+        sun.width = 96
+        sun.height = 96
+        sun.angle = system.star.angle ?? 0
 
-        this.addChild(sun);
+        this.addChild(sun)
 
-        const divider = system.objectsCount <= 2 ? 4 : 2;
-        const yAdd = ((this.screenHeight / divider) - 60) / system.objectsCount;
-        const xAdd = ((this.screenWidth / divider) - 60) / system.objectsCount;
+        const divider = system.objectsCount <= 2 ? 4 : 2
+        const yAdd = ((this.screenHeight / divider) - 60) / system.objectsCount
+        const xAdd = ((this.screenWidth / divider) - 60) / system.objectsCount
 
-        for(let i = 1; i <= system.objectsCount; i++ ) {
-            this.drawPlanet(xAdd*i, yAdd*i, system.objects[i-1]);
+        for (let i = 1; i <= system.objectsCount; i++) {
+            this.drawPlanet(xAdd * i, yAdd * i, system.objects[i - 1])
         }
     }
 
-    drawPlanet(xAdd: number, yAdd: number, planet: SpaceObject) {
-        const graphy: Graphics = new Graphics();
-        graphy.beginFill(0x000000, 0);
-        graphy.lineStyle(2, 0xffffff);
-        graphy.drawEllipse(this.screenWidth / 2, this.screenHeight / 2, xAdd, yAdd);
-        graphy.endFill();
+    drawPlanet (xAdd: number, yAdd: number, planet: SpaceObject) {
+        const graphy: Graphics = new Graphics()
+        graphy.beginFill(0x000000, 0)
+        graphy.lineStyle(2, 0xffffff)
+        graphy.drawEllipse(this.screenWidth / 2, this.screenHeight / 2, xAdd, yAdd)
+        graphy.endFill()
 
+        this.addChild(graphy)
 
-        this.addChild(graphy);
+        const { x, y } = this.getPosOnEcllipse(xAdd, yAdd, planet.startAngle)
 
-        const {x,y} = this.getPosOnEcllipse(xAdd, yAdd, planet.startAngle);
+        const planetSprite = Sprite.from(`${planet.sprite}.png`)
+        planetSprite.anchor.set(0.5)
+        planetSprite.x = x
+        planetSprite.y = y
+        planetSprite.angle = planet.ratationAngle
+        planetSprite.width = planet.mass <= 4 ? 32 : 48
+        planetSprite.height = planet.mass <= 4 ? 32 : 48
 
-        const planetSprite = Sprite.from(`${planet.sprite}.png`);
-        planetSprite.anchor.set(0.5);
-        planetSprite.x = x;
-        planetSprite.y = y;
-        planetSprite.angle = planet.ratationAngle;
-        planetSprite.width = planet.mass <= 4 ? 32 : 48;
-        planetSprite.height = planet.mass <= 4 ? 32 : 48;
-
-        this.addChild(planetSprite);
+        this.addChild(planetSprite)
     }
 
     drawFrame () {
-        const graphy: Graphics = new Graphics();
-        graphy.beginFill(0x000000, 0.7);
-        graphy.lineStyle(2, 0xffffff);
-        graphy.drawRect(10, 10, this.screenWidth - 20, this.screenHeight - 20);
-        graphy.lineStyle(0.5, 0xffffff);
-        graphy.drawRect(15, 15, 1, 50);
-        graphy.drawRect(15, 15, 50, 1);
-        graphy.endFill();
+        const graphy: Graphics = new Graphics()
+        graphy.beginFill(0x000000, 0.7)
+        graphy.lineStyle(2, 0xffffff)
+        graphy.drawRect(10, 10, this.screenWidth - 20, this.screenHeight - 20)
+        graphy.lineStyle(0.5, 0xffffff)
+        graphy.drawRect(15, 15, 1, 50)
+        graphy.drawRect(15, 15, 50, 1)
+        graphy.endFill()
 
-        this.addChild(graphy);
+        this.addChild(graphy)
     }
 
-    update(framesPassed: number): void {
+    update (framesPassed: number): void {
         if (this.currentSeed !== this.seed) {
             this.children.forEach(child => {
-                child.destroy(true);
-            });
-            this.removeChildren();
-            const system = generateSolarSystem(new RandSeed(this.seed));
-            this.drawFrame();
-            this.drawSystem(system);
-            this.drawResetButton();
-            this.currentSeed = this.seed;
+                child.destroy(true)
+            })
+            this.removeChildren()
+            const system = generateSolarSystem(new RandSeed(this.seed))
+            this.drawFrame()
+            this.drawSystem(system)
+            this.drawResetButton()
+            this.currentSeed = this.seed
         }
-        framesPassed;
     }
 }
