@@ -1,9 +1,9 @@
 import { HtmlPopup } from './HtmlPopup'
-import { type Application } from 'pixi.js'
-import { type Game } from '../Game'
+import { Application } from 'pixi.js'
+import { Game } from '../Game'
 import { InstallationSelectPopupApp } from './app/InstallationSelectPopupApp'
-import { type Installation } from '../state/slices/types'
-import { type JSXInternal } from 'preact/src/jsx'
+import { Installation } from '../state/slices/types'
+import { JSXInternal } from 'preact/src/jsx'
 import { configSlice } from '../state/slices/config.slice'
 
 export class InstallationSelectHtmlPopoup extends HtmlPopup {

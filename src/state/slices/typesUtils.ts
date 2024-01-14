@@ -1,5 +1,5 @@
 import { STORAGE_TO_DESC } from './strageDesc'
-import { type InstallationResurces, RESOURCES } from './types'
+import { InstallationResurces, RESOURCES } from './types'
 
 export const initInstallationResources = () => {
     const initialState: InstallationResurces = {}

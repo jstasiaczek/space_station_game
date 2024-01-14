@@ -1,10 +1,10 @@
-import { type Game } from '../Game'
+import { Game } from '../Game'
 import { render } from 'preact'
 import { mustGetElementById } from '../utils/mustGetElementById'
 import { POPUP_CONTAINER_ID } from '../const'
 import './htmlPopup.scss'
-import { type Application, Container, type IDestroyOptions } from 'pixi.js'
-import { type JSXInternal } from 'preact/src/jsx'
+import { Application, Container, IDestroyOptions } from 'pixi.js'
+import { JSXInternal } from 'preact/src/jsx'
 
 export interface IHtmlPopupAppProps {
     onClosePopup: () => void

@@ -1,5 +1,5 @@
-import { type Application, Container, Graphics, TextStyle, Text } from 'pixi.js'
-import { type Game } from '../Game'
+import { Application, Container, Graphics, TextStyle, Text } from 'pixi.js'
+import { Game } from '../Game'
 
 export class Popup extends Container {
     protected readonly screenWidth: number

@@ -1,9 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { installationSlice } from '../slices/installation.slice'
-import { type GameConfig, type Installations } from '../slices/types'
+import { GameConfig, Installations } from '../slices/types'
 import { configSlice } from '../slices/config.slice'
 import { galaxySlice } from '../slices/galaxy.slice'
-import { type Galaxy } from '@rApp/utils/starSystem.types'
+import { Galaxy } from '@rApp/utils/starSystem.types'
 
 export interface StoreData {
     installations: Installations

@@ -1,7 +1,7 @@
-import { type IHtmlPopupAppProps } from '../HtmlPopup'
-import { type FunctionalComponent } from 'preact'
+import { IHtmlPopupAppProps } from '../HtmlPopup'
+import { FunctionalComponent } from 'preact'
 import './popups.scss'
-import { type Installation } from '../../state/slices/types'
+import { Installation } from '../../state/slices/types'
 
 export interface InstallationSelectPopupAppProps extends IHtmlPopupAppProps {
     installations: Installation[]

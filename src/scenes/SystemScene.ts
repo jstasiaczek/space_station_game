@@ -1,9 +1,9 @@
-import { type Application, Sprite, Text, Graphics } from 'pixi.js'
+import { Application, Sprite, Text, Graphics } from 'pixi.js'
 import RandSeed from 'rand-seed'
-import { type IScene } from '../Manager'
-import { type Game } from '../Game'
+import { IScene } from '../Manager'
+import { Game } from '../Game'
 import { generateSolarSystem } from '../utils/starSystem'
-import { type SolarSystem, type SpaceObject } from '../utils/starSystem.types'
+import { SolarSystem, SpaceObject } from '../utils/starSystem.types'
 import { SceneAbstract } from './SceneAbscract'
 
 export class SystemScene extends SceneAbstract implements IScene {

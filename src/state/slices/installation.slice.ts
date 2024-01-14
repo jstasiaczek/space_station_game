@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
-import type { PayloadAction } from '@reduxjs/toolkit'
-import { type Installation, type Installations, type ResourceAction } from './types'
+import { PayloadAction } from '@reduxjs/toolkit'
+import { Installation, Installations, ResourceAction } from './types'
 import NP from 'number-precision'
 
 const initialState: Installations = {}

@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
-import type { PayloadAction } from '@reduxjs/toolkit'
-import { type Galaxy } from '../../utils/starSystem.types'
+import { PayloadAction } from '@reduxjs/toolkit'
+import { Galaxy } from '../../utils/starSystem.types'
 
 const initialState: Galaxy = {
     stars: []

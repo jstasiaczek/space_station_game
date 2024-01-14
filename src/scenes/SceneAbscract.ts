@@ -1,6 +1,6 @@
-import { type Application, Container } from 'pixi.js'
-import { type AnyAction } from 'redux'
-import { type Game } from '../Game'
+import { Application, Container } from 'pixi.js'
+import { AnyAction } from 'redux'
+import { Game } from '../Game'
 
 export abstract class SceneAbstract extends Container {
     protected readonly screenWidth: number

@@ -1,5 +1,5 @@
-import { type ToolkitStore } from '@reduxjs/toolkit/dist/configureStore'
-import { type StoreData } from './store/configureStore'
+import { ToolkitStore } from '@reduxjs/toolkit/dist/configureStore'
+import { StoreData } from './store/configureStore'
 
 export const getInstallations = (store: ToolkitStore<StoreData>) => store.getState().installations
 

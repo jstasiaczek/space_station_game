@@ -1,4 +1,4 @@
-import type RandSeed from 'rand-seed'
+import RandSeed from 'rand-seed'
 
 export const randomInteger = (rand: RandSeed, min: number, max: number): number => {
     return Math.floor(rand.next() * (max - min + 1)) + min

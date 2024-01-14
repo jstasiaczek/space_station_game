@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
-import type { PayloadAction } from '@reduxjs/toolkit'
-import { type GameConfig } from './types'
+import { PayloadAction } from '@reduxjs/toolkit'
+import { GameConfig } from './types'
 
 const initialState: GameConfig = {
     seed: '',

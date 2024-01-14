@@ -32,6 +32,7 @@ module.exports = {
         "react/react-in-jsx-scope": 0,
         "react/prop-types": 0,
         "@typescript-eslint/explicit-function-return-type": 0,
-        "@typescript-eslint/strict-boolean-expressions": 0
+        "@typescript-eslint/strict-boolean-expressions": 0,
+        "@typescript-eslint/consistent-type-imports": 0
     }
 }

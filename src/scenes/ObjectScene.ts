@@ -1,17 +1,17 @@
 import {
-    type Application,
+    Application,
     Container,
     Sprite,
     TextStyle,
     Text,
-    type FederatedPointerEvent
+    FederatedPointerEvent
 } from 'pixi.js'
-import { type IScene } from '../Manager'
-import { type Game } from '../Game'
-import { type GalaxyStar, type SpaceObject } from '@rApp/utils/starSystem.types'
+import { IScene } from '../Manager'
+import { Game } from '../Game'
+import { GalaxyStar, SpaceObject } from '@rApp/utils/starSystem.types'
 import { TimeUpdater } from '@rApp/utils/timeUpdater'
 import { PositionIncrementer } from '@rApp/utils/positionIncrementer'
-import { type Generator, RESOURCES, type Installation } from '@rApp/state/slices/types'
+import { Generator, RESOURCES, Installation } from '@rApp/state/slices/types'
 import { getConfig, getGalaxy, getInstallations } from '@rApp/state/selector'
 import { GeneratorHtmlPopup } from '../popup/GeneratorHtmlPopup'
 import { Button } from '../ui/Button'

@@ -1,4 +1,4 @@
-import { GENERATOR_TYPE, type Generator, RESOURCES } from './types'
+import { GENERATOR_TYPE, Generator, RESOURCES } from './types'
 
 export interface GeneratorDescLevel {
     income: number

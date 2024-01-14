@@ -1,9 +1,9 @@
 import { HtmlPopup } from './HtmlPopup'
-import { type Application } from 'pixi.js'
-import { type Game } from '../Game'
+import { Application } from 'pixi.js'
+import { Game } from '../Game'
 import { GeneratorPopupApp } from './app/GeneratorPopupApp'
-import { type JSXInternal } from 'preact/src/jsx'
-import { type Generator } from '../state/slices/types'
+import { JSXInternal } from 'preact/src/jsx'
+import { Generator } from '../state/slices/types'
 
 export class GeneratorHtmlPopup extends HtmlPopup {
     protected generators: Generator[]

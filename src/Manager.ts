@@ -1,5 +1,5 @@
-import { type Application } from '@pixi/app'
-import { type DisplayObject } from '@pixi/display'
+import { Application } from '@pixi/app'
+import { DisplayObject } from '@pixi/display'
 
 // eslint-disable-next-line
 export class Manager {

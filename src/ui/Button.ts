@@ -1,4 +1,4 @@
-import { Container, Graphics, type TextStyle, Text } from 'pixi.js'
+import { Container, Graphics, TextStyle, Text } from 'pixi.js'
 
 export class Button extends Container {
     private readonly text: string

@@ -15,7 +15,7 @@ export interface ResourceStorage {
     type: GENERATOR_INCOME_TYPE
 }
 
-export type InstallationResurces = Record<string, ResourceStorage>
+export InstallationResurces = Record<string, ResourceStorage>
 
 export enum INSTALLATION_TYPE {
     STATION = 'STATION',
@@ -29,7 +29,7 @@ export enum GENERATOR_INCOME_TYPE {
     HYDROGEN = 'HYDROGEN',
 }
 
-export type Installations = Record<string, Installation>
+export Installations = Record<string, Installation>
 
 export interface Installation {
     id: string
@@ -44,7 +44,7 @@ export interface Object {
     installations: string[]
 }
 
-export type SolarSystems = Record<string, any[]>
+export SolarSystems = Record<string, any[]>
 
 export interface GameConfig {
     seed: string

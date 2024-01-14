@@ -1,16 +1,16 @@
-import type RandSeed from 'rand-seed'
+import RandSeed from 'rand-seed'
 import { randomInteger, randomFloat } from './random'
 import {
     PLANET_TEMPERATURE,
     PLANET_TYPE,
-    type SpaceObject,
-    type STAR_TYPE,
-    type Star,
-    type StarDefinition,
+    SpaceObject,
+    STAR_TYPE,
+    Star,
+    StarDefinition,
     starsTypes,
-    type SolarSystem,
-    type Satellite,
-    type Galaxy
+    SolarSystem,
+    Satellite,
+    Galaxy
 } from './starSystem.types'
 
 export const getStarDefByType = (type: STAR_TYPE): StarDefinition => starsTypes.find(def => def.type === type) ?? starsTypes[0]
